@@ -1,12 +1,13 @@
-import { Home } from './pages/Home'
-import { Login } from './pages/Login'
+import { Principal } from './pages/Principal'
+import { Routes } from './routes'
 
 function App() {
 
   return (
-    <>
-      <Home />
-    </>
+    <Principal>
+      <Routes />
+    </Principal>
+
   )
 }
 
