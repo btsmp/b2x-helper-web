@@ -1,8 +1,8 @@
 import axios from 'axios';
-import env from "react-dotenv";
+const BASE_URL='https://b2x-helper-api.onrender.com/';
 
 export const api = axios.create({
-  baseURL: env.BASE_URL
+  baseURL: BASE_URL
 })
 
 export async function createDeviceRegister(serial: string) {
