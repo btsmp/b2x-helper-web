@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect, ReactNode } from 'react'
-import { toast } from 'react-toastify'
 import { api } from '../utils/api'
 import axios from 'axios'
 
