@@ -1,64 +1,46 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState } from 'react';
 import { createDeviceRegister } from '../utils/api';
+import { Button } from './Button';
+import { useForm } from 'react-hook-form'
 
-interface RegistrationData {
+interface FormData {
   serial: string;
 }
 
 export function Home() {
-  const [formData, setFormData] = useState<RegistrationData>({
-    serial: '',
-  });
+
+  const [loading, setLoading] = useState(false)
+  const { register, handleSubmit } = useForm<FormData>()
   const [message, setMessage] = useState<string | null>()
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  async function onSubmit(data: FormData) {
+    setLoading(true)
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    if (!(formData.serial.length === 11)) {
-      setFormData(({
-        serial: ''
-      }))
+    if (!(data.serial.length === 11)) {
       setMessage('O serial deve ter exatamente 11 caracteres')
+      setLoading(false)
       return
     }
-    const response = await createDeviceRegister(formData.serial)
+    const response = await createDeviceRegister(data.serial)
     setMessage(response);
-    console.log(formData);
+    setLoading(false)
   }
 
   return (
     <>
       <h2 className="text-2xl font-semibold mb-6">Registro S/N</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
           <label htmlFor="serial" className="block text-sm font-medium text-gray-600">
             Serial
           </label>
           <input
-            type="text"
-            name="serial"
-            id="serial"
-            value={formData.serial}
-            onChange={handleChange}
+            {...register('serial', { required: true })}
             className="mt-1 p-2 w-full border rounded-md"
-            required
           />
         </div>
         <div className="mb-6">
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          >
-            Registrar
-          </button>
+          <Button title='Registrar' loading={loading} />
           <p className='text-center pt-3 text-xs' >{message}</p>
         </div>
       </form>

@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './css/index.css'
 import { AuthProvider } from './contexts/auth.tsx'
+import { Notify } from './components/Notify.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AuthProvider>
       <App />
+      <Notify />
     </AuthProvider>
   </React.StrictMode>,
 )
